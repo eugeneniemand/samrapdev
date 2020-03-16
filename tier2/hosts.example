@@ -1,7 +1,7 @@
-[samrapdev]
+[stainsbury]
 0.0.0.0
 
-[samrapdev:vars]
+[stainsbury:vars]
 ansible_python_interpreter=/usr/bin/python3
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=

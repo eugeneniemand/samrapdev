@@ -1,13 +1,13 @@
 output "id" {
-  value = "${digitalocean_droplet.samrapdev.id}"
+  value = "${digitalocean_droplet.stainsbury.id}"
 }
 
 output "name" {
-  value = "${digitalocean_droplet.samrapdev.name}"
+  value = "${digitalocean_droplet.stainsbury.name}"
 }
 
 output "address" {
-  value = "${digitalocean_droplet.samrapdev.ipv4_address}"
+  value = "${digitalocean_droplet.stainsbury.ipv4_address}"
 }
 
 output "message" {

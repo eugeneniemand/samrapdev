@@ -10,9 +10,9 @@ resource "digitalocean_ssh_key" "default" {
   public_key = "${file("/Users/sam/.ssh/id_rsa.pub")}"
 }
 
-resource "digitalocean_spaces_bucket" "samrapdev-backups" {
-  name   = "samrapdev-backups"
-  region = "${var.region}"
+resource "digitalocean_spaces_bucket" "stainsbury-backups" {
+  name   = "${var.do_bucket}"
+  region = "${var.do_region}"
   acl    = "private"
 }
 

@@ -5,3 +5,4 @@
 server.retry
 hosts
 !hosts.example
+terraform.tfvars
