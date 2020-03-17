@@ -97,6 +97,12 @@
     state: directory
   register: ghost_content_path
 
+- name: Create ghost config mount point
+  file:
+    path: "/home/{{ ansible_env.USER }}/ghost"
+    state: directory
+  register: ghost_path
+
 - name: Create nginx mount point
   file:
     path: /usr/share/nginx/html
@@ -107,7 +113,7 @@
   register: letsencrypt_restored
   shell: systools restore -d /etc/letsencrypt
   args:
-    creates: /etc/letsencrypt/live/stainsbury.com
+    creates: /etc/letsencrypt/live/stainsbury.org
   become: yes
   become_flags: "-E"
   ignore_errors: yes
@@ -157,14 +163,14 @@
     minute: 0
     hour: 2
     # TODO variablize container name
-    job: certbot certonly -n --webroot -w /usr/share/nginx/html -d stainsbury.com --deploy-hook='docker exec ghost_deploy_nginx_1 nginx -s reload'
+    job: certbot certonly -n --webroot -w /usr/share/nginx/html -d stainsbury.org --deploy-hook='docker exec ghost_deploy_nginx_1 nginx -s reload'
     user: root
   become: yes
 
 - name: Upload backup script
   copy:
     src: backup.sh
-    dest: /home/samrap/scripts/backup.sh
+    dest: /home/stainsbury/scripts/backup.sh
     mode: '0775'
 
 - name: Install backup cron
@@ -172,6 +178,6 @@
     name: "run back up script"
     minute: 30
     hour: 2
-    job: "/home/samrap/scripts/backup.sh > /home/{{ ansible_env.USER }}/logs/backup.log 2>&1"
+    job: "/home/stainsbury/scripts/backup.sh > /home/{{ ansible_env.USER }}/logs/backup.log 2>&1"
     user: root
   become: yes

@@ -4,8 +4,8 @@ groups:
   - cloud-users
 
 users:
-  - name: samrap
-    gecos: samrap
+  - name: stainsbury
+    gecos: stainsbury
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: [sudo]
     shell: /bin/bash
@@ -34,7 +34,7 @@ runcmd:
   - |
     # Copy the root authorized SSH keys that this droplet was created with.
     if [ -f /root/.ssh/authorized_keys ]; then
-      mkdir /home/samrap/.ssh
-      cp /root/.ssh/authorized_keys /home/samrap/.ssh/authorized_keys
-      chown -R samrap:samrap /home/samrap/.ssh
+      mkdir /home/stainsbury/.ssh
+      cp /root/.ssh/authorized_keys /home/stainsbury/.ssh/authorized_keys
+      chown -R stainsbury:stainsbury /home/stainsbury/.ssh
     fi

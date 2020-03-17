@@ -28,17 +28,17 @@
   become: yes
   when: bat_check_deb.rc == 1
 
-- name: Upload .environment (user environment variables) for samrap
+- name: Upload .environment (user environment variables) for stainsbury
   template:
     src: .environment
     dest: "/home/{{ ansible_env.USER }}/.environment"
 
-- name: Upload profile for samrap
+- name: Upload profile for stainsbury
   copy:
     src: ".profile"
     dest: "/home/{{ ansible_env.USER }}/.profile"
 
-- name: Source profile for samrap
+- name: Source profile for stainsbury
   shell: ". /home/{{ ansible_env.USER }}/.profile"
 
 - name: Upload oh-my-zsh configuration

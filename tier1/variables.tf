@@ -3,12 +3,12 @@ variable "do_token" {}
 variable "image" {
   default = "ubuntu-18-04-x64"
 }
-variable "name" {}
+variable "droplet_name" {}
 
 variable "region" {
-  default = "sfo2"
+  default = "ams3"
 }
 
 variable "size" {
-  default = "s-1vcpu-3gb"
+  default = "s-1vcpu-1gb"
 }

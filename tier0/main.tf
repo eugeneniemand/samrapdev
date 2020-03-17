@@ -1,18 +1,18 @@
 provider "digitalocean" {
-  token = "${var.do_token}"
+  token = var.do_token
 
-  spaces_access_id  = "${var.do_spaces_access_id}"
-  spaces_secret_key = "${var.do_spaces_secret_key}"
+  spaces_access_id  = var.do_spaces_access_id
+  spaces_secret_key = var.do_spaces_secret_key
 }
 
 resource "digitalocean_ssh_key" "default" {
-  name       = "sam_rapaport_macbook_pro"
-  public_key = "${file("/Users/sam/.ssh/id_rsa.pub")}"
+  name       = "admin_ssh_key"
+  public_key = var.ssh_keys
 }
 
 resource "digitalocean_spaces_bucket" "stainsbury-backups" {
-  name   = "${var.do_bucket}"
-  region = "${var.do_region}"
+  name   = var.do_bucket
+  region = var.do_region
   acl    = "private"
 }
 
@@ -25,52 +25,55 @@ resource "digitalocean_firewall" "webserver" {
 
   tags = ["firewall:webserver"]
 
-  inbound_rule = [
-    {
+  inbound_rule {
       protocol           = "tcp"
       port_range         = "22"
       source_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  inbound_rule {
       protocol           = "tcp"
       port_range         = "80"
       source_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  inbound_rule {
       protocol           = "tcp"
       port_range         = "443"
       source_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  inbound_rule {
       protocol           = "icmp"
       source_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-  ]
+    }
 
-  outbound_rule = [
-    {
+  outbound_rule {
       protocol                = "tcp"
       port_range              = "53"
       destination_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  outbound_rule {
       protocol                = "udp"
       port_range              = "53"
       destination_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  outbound_rule {
       protocol                = "tcp"
       port_range              = "80"
       destination_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  outbound_rule {
       protocol                = "tcp"
       port_range              = "443"
       destination_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-    {
+    }
+
+  outbound_rule {
       protocol                = "icmp"
       destination_addresses   = ["0.0.0.0/0", "::/0"]
-    },
-  ]
+    }
 }

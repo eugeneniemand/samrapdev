@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /home/samrap/.environment
+. /home/stainsbury/.environment
 
-systools backup -d /home/samrap/ghost_content
+systools backup -d /home/stainsbury/ghost_content
 systools backup -d /etc/letsencrypt

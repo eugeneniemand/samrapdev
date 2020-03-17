@@ -5,9 +5,10 @@ services:
     image: ghost:latest
     restart: always
     environment:
-      url: https://stainsbury.com
+      url: https://stainsbury.org
     volumes:
-      - /home/samrap/ghost_content:/var/lib/ghost/content
+      - /home/stainsbury/ghost_content:/var/lib/ghost/content
+      - /home/stainsbury/ghost:/var/lib/ghost
 
   nginx:
     build:
