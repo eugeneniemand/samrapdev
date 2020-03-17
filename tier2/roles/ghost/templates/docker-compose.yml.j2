@@ -2,13 +2,14 @@ version: '3'
 services:
 
   ghost:
-    image: ghost:latest
+    build:
+      context: ./ghost
+      dockerfile: Dockerfile
     restart: always
-    environment:
-      url: https://stainsbury.org
+    env_file:
+      - secrets.env
     volumes:
       - /home/stainsbury/ghost_content:/var/lib/ghost/content
-      - /home/stainsbury/ghost:/var/lib/ghost
 
   nginx:
     build:

@@ -68,11 +68,24 @@
     state: directory
     mode: 0755
   register: ghost_deploy_path
+  tags:
+    - docker-deploy
 
 - name: Upload docker-compose configuration
   template:
     src: docker-compose.yml.j2
     dest: "{{ ghost_deploy_path.path }}/docker-compose.yml"
+  tags:
+    - docker-deploy
+
+- name: Create ghost Docker directory
+  file:
+    path: "{{ ghost_deploy_path.path }}/ghost"
+    state: directory
+    mode: 0755
+  register: ghost_dockerfile_path
+  tags:
+    - docker-deploy
 
 - name: Create nginx Docker directory
   file:
@@ -80,16 +93,29 @@
     state: directory
     mode: 0755
   register: ghost_nginx_path
+  tags:
+    - docker-deploy
 
 - name: Upload nginx configuration
   template:
     src: nginx/default.conf.j2
     dest: "{{ ghost_nginx_path.path }}/default.conf"
+  tags:
+    - docker-deploy
+
+- name: Upload ghost Dockerfile
+  copy:
+    src: ghost/Dockerfile
+    dest: "{{ ghost_dockerfile_path.path }}/Dockerfile"
+  tags:
+    - docker-deploy
 
 - name: Upload nginx Dockerfile
   copy:
     src: nginx/Dockerfile
     dest: "{{ ghost_nginx_path.path }}/Dockerfile"
+  tags:
+    - docker-deploy
 
 - name: Create ghost_content mount point
   file:
@@ -113,13 +139,13 @@
   register: letsencrypt_restored
   shell: systools restore -d /etc/letsencrypt
   args:
-    creates: /etc/letsencrypt/live/stainsbury.org
+    creates: /etc/letsencrypt/live/ghost.stainsbury.org
   become: yes
   become_flags: "-E"
   ignore_errors: yes
 
 - debug:
-    msg: Failed to restore letsencrypt certificates. You may need to generate these manually.
+    msg: Failed to restore letsencrypt certificates. You may need to generate these manually. Try sudo certbot certonly -d ghost.stainsbury.org --deploy-hook='docker exec ghost_deploy_nginx_1 nginx -s reload' --agree-tos --email <YOUR_EMAIL> --manual --preferred-challenges dns
   when: letsencrypt_restored.rc > 0
 
 - name: Restore ghost_content
@@ -156,6 +182,8 @@
     # TODO: fix so that we can use TLS
     # see: https://github.com/ansible/ansible/issues/29471#issuecomment-329736312
     tls: no
+  tags:
+    - docker-deploy
 
 - name: Install certbot renewal cron
   cron:
